@@ -9,7 +9,8 @@ import { FlyingCartGhost } from '@/components/ui/FlyingCartGhost';
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
+  maximumScale: 1,
+  userScalable: false,
   viewportFit: 'cover',
   themeColor: '#0F0F11',
 };
