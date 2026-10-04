@@ -244,39 +244,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
-    // Demo / offline sign in fallback
+    // Offline / unconfigured fallback: Only allow authorized master admin credentials, block arbitrary accounts
     await new Promise((r) => setTimeout(r, 400));
     setIsLoading(false);
 
-    const isAdminLogin = isAdminCredentials;
+    if (isAdminCredentials) {
+      const adminProf: Profile = {
+        id: 'usr-admin-main',
+        email: cleanEmail,
+        full_name: 'Admin',
+        role: 'admin',
+        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      setProfile(adminProf);
+      try {
+        localStorage.setItem('atelier_demo_user', JSON.stringify(adminProf));
+        window.dispatchEvent(new CustomEvent('atelier_auth_changed', { detail: adminProf }));
+      } catch {}
+      success('Welcome Back, Admin', 'Signed in as Administrator.');
+      closeAuthModal();
+      return { success: true };
+    }
 
-    const newProf: Profile = isAdminLogin
-      ? {
-          id: 'usr-admin-main',
-          email: cleanEmail,
-          full_name: 'Admin',
-          role: 'admin',
-          avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        }
-      : {
-          id: 'usr-' + Date.now(),
-          email: cleanEmail,
-          full_name: cleanEmail.split('@')[0],
-          role: 'customer' as Role,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        };
-
-    setProfile(newProf);
-    try {
-      localStorage.setItem('atelier_demo_user', JSON.stringify(newProf));
-      window.dispatchEvent(new CustomEvent('atelier_auth_changed', { detail: newProf }));
-    } catch {}
-    success('Welcome Back', `Signed in as ${newProf.full_name} (${newProf.role})`);
-    closeAuthModal();
-    return { success: true };
+    // Disallow arbitrary fake logins
+    toastError(
+      'Authentication Database Offline',
+      'Supabase environment variables are missing on Vercel. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel Settings.'
+    );
+    return {
+      success: false,
+      error: 'Authentication database is not configured. Please set Supabase environment variables in Vercel.',
+    };
   };
 
   const signUp = async (email: string, password: string, fullName: string): Promise<AuthResult> => {
@@ -359,24 +359,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     }
 
+    // If Supabase is unconfigured, reject signups with informative notification
     await new Promise((r) => setTimeout(r, 400));
     setIsLoading(false);
-    const newProf: Profile = {
-      id: 'usr-' + Date.now(),
-      email: cleanEmail,
-      full_name: fullName,
-      role: 'customer' as Role,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
+    toastError(
+      'Authentication Database Offline',
+      'Supabase environment variables are missing on Vercel. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel Settings.'
+    );
+    return {
+      success: false,
+      error: 'Authentication database is not configured. Please set Supabase environment variables in Vercel.',
     };
-    setProfile(newProf);
-    try {
-      localStorage.setItem('atelier_demo_user', JSON.stringify(newProf));
-      window.dispatchEvent(new CustomEvent('atelier_auth_changed', { detail: newProf }));
-    } catch {}
-    success('Account Created', `Welcome to BRANDWORLD, ${fullName}`);
-    closeAuthModal();
-    return { success: true };
   };
 
   const signOut = async () => {
