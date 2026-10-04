@@ -3,13 +3,14 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Product } from '@/types';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
 import { formatCurrency } from '@/lib/utils';
 import { useCart } from '@/hooks/useCart';
 import { useCurrency } from '@/context/CurrencyContext';
-import { Check, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Check, ArrowRight, Zap } from 'lucide-react';
 
 interface QuickViewModalProps {
   product: Product | null;
@@ -18,6 +19,7 @@ interface QuickViewModalProps {
 }
 
 export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps) {
+  const router = useRouter();
   const { addItem } = useCart();
   const { currentCountry } = useCurrency();
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
   const activePrice = product.sale_price ?? product.price;
   const mainImage = product.images?.[0]?.image_url || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800';
 
-  const handleAddToCart = () => {
+  const handleDirectBuy = () => {
     addItem({
       id: `${product.id}-${selectedVariantId || 'default'}`,
       productId: product.id,
@@ -39,6 +41,7 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
       maxStock: product.stock_quantity,
     });
     onClose();
+    router.push('/checkout');
   };
 
   return (
@@ -128,11 +131,11 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
             </div>
 
             <Button
-              onClick={handleAddToCart}
-              className="flex-1"
-              leftIcon={<ShoppingBag className="w-4 h-4" />}
+              onClick={handleDirectBuy}
+              className="flex-1 bg-black text-white hover:bg-neutral-900 font-bold"
+              leftIcon={<Zap className="w-4 h-4 fill-amber-400 text-amber-400" />}
             >
-              Add to Bag
+              Direct Buy Now
             </Button>
           </div>
 

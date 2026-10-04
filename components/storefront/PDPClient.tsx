@@ -3,10 +3,10 @@
 import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Heart,
-  ShoppingBag,
   Star,
   ShieldCheck,
   Truck,
@@ -15,6 +15,7 @@ import {
   Check,
   CheckCircle2,
   Share2,
+  Zap,
 } from 'lucide-react';
 import { Product, Review } from '@/types';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -34,6 +35,7 @@ interface PDPClientProps {
 }
 
 export function PDPClient({ product, initialReviews, relatedProducts }: PDPClientProps) {
+  const router = useRouter();
   const { profile } = useAuth();
   const { addItem } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
@@ -74,21 +76,19 @@ export function PDPClient({ product, initialReviews, relatedProducts }: PDPClien
     setZoomCoords({ x, y });
   };
 
-  const handleAddToCart = () => {
+  const handleDirectBuy = () => {
     if (product.stock_quantity === 0) return;
-    addItem(
-      {
-        id: `${product.id}-${selectedVariantId || 'default'}`,
-        productId: product.id,
-        variantId: selectedVariantId || undefined,
-        title: product.title,
-        price: activePrice,
-        image: currentImage.image_url,
-        quantity,
-        maxStock: product.stock_quantity,
-      },
-      mainImageRef.current
-    );
+    addItem({
+      id: `${product.id}-${selectedVariantId || 'default'}`,
+      productId: product.id,
+      variantId: selectedVariantId || undefined,
+      title: product.title,
+      price: activePrice,
+      image: currentImage.image_url,
+      quantity,
+      maxStock: product.stock_quantity,
+    });
+    router.push('/checkout');
   };
 
   const handleSubmitReview = async (e: React.FormEvent) => {
@@ -385,16 +385,16 @@ export function PDPClient({ product, initialReviews, relatedProducts }: PDPClien
                   </button>
                 </div>
 
-                {/* Add to Cart CTA */}
+                {/* Direct Buy CTA */}
                 <Button
                   variant="primary"
                   size="lg"
                   disabled={product.stock_quantity === 0}
-                  onClick={handleAddToCart}
-                  className="flex-1 h-13 shadow-floating group text-sm"
-                  leftIcon={<ShoppingBag className="w-4 h-4" />}
+                  onClick={handleDirectBuy}
+                  className="flex-1 h-13 shadow-floating group text-sm font-bold bg-black text-white hover:bg-neutral-900"
+                  leftIcon={<Zap className="w-4 h-4 fill-amber-400 text-amber-400" />}
                 >
-                  {product.stock_quantity > 0 ? 'Add to Shopping Bag' : 'Archive Out of Stock'}
+                  {product.stock_quantity > 0 ? 'Direct Buy Now' : 'Archive Out of Stock'}
                 </Button>
               </div>
 
@@ -750,11 +750,11 @@ export function PDPClient({ product, initialReviews, relatedProducts }: PDPClien
             size="md"
             variant="primary"
             disabled={product.stock_quantity === 0}
-            onClick={handleAddToCart}
-            className="h-10 px-4 text-xs font-bold shadow-sm"
-            leftIcon={<ShoppingBag className="w-3.5 h-3.5" />}
+            onClick={handleDirectBuy}
+            className="h-10 px-4 text-xs font-bold shadow-sm bg-black text-white hover:bg-neutral-900"
+            leftIcon={<Zap className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />}
           >
-            {product.stock_quantity > 0 ? 'Add to Bag' : 'Out of Stock'}
+            {product.stock_quantity > 0 ? 'Buy Now' : 'Out of Stock'}
           </Button>
         </div>
       </div>

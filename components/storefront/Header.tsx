@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { motion, useAnimation, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
-  ShoppingBag, 
   Heart, 
   User, 
   Menu, 
@@ -338,23 +337,6 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
                 <span>Admin Panel</span>
               </Link>
             )}
-
-            {/* Shopping Bag Trigger with dynamic badge */}
-            <motion.button
-              id="storefront-header-cart-icon"
-              animate={cartIconControls}
-              onClick={() => setIsDrawerOpen(true)}
-              className="relative flex items-center gap-1.5 sm:gap-2 h-8 sm:h-9 px-2 sm:px-3.5 rounded-full bg-black text-white hover:bg-neutral-800 transition-all shadow-sm cursor-pointer shrink-0 ml-0.5 sm:ml-1"
-              aria-label="View shopping bag"
-            >
-              <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
-              <span className="hidden sm:inline text-xs font-semibold tracking-wider uppercase">Bag</span>
-              {itemCount > 0 && (
-                <span className="min-w-[17px] h-[17px] px-1 rounded-full bg-accent text-white text-[10px] font-bold flex items-center justify-center">
-                  {itemCount}
-                </span>
-              )}
-            </motion.button>
           </div>
         </div>
       </motion.header>

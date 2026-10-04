@@ -3,8 +3,9 @@
 import React, { useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Heart, ShoppingBag, Eye } from 'lucide-react';
+import { Heart, Eye, Zap } from 'lucide-react';
 import { Product } from '@/types';
 import { formatCurrency } from '@/lib/utils';
 import { useCart } from '@/hooks/useCart';
@@ -17,6 +18,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onQuickView }: ProductCardProps) {
+  const router = useRouter();
   const { addItem } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { formatPrice } = useCurrency();
@@ -28,20 +30,19 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
   const primaryImage = product.images?.[0]?.image_url || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800';
   const secondaryImage = product.images?.[1]?.image_url || primaryImage;
 
-  const handleQuickAdd = (e: React.MouseEvent) => {
+  const handleDirectBuy = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addItem(
-      {
-        id: `${product.id}-default`,
-        productId: product.id,
-        title: product.title,
-        price: product.sale_price ?? product.price,
-        image: primaryImage,
-        maxStock: product.stock_quantity,
-      },
-      imageContainerRef.current
-    );
+    if (product.stock_quantity === 0) return;
+    addItem({
+      id: `${product.id}-default`,
+      productId: product.id,
+      title: product.title,
+      price: product.sale_price ?? product.price,
+      image: primaryImage,
+      maxStock: product.stock_quantity,
+    });
+    router.push('/checkout');
   };
 
   const handleWishlistClick = (e: React.MouseEvent) => {
@@ -158,15 +159,15 @@ export function ProductCard({ product, onQuickView }: ProductCardProps) {
           </button>
         )}
 
-        {/* Quick Add Action Bar - always visible on mobile, reveals on hover on desktop */}
+        {/* Direct Buy Action Bar - always visible on mobile, reveals on hover on desktop */}
         <div className="absolute inset-x-2.5 bottom-2.5 z-20 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300">
           <button
-            onClick={handleQuickAdd}
+            onClick={handleDirectBuy}
             disabled={product.stock_quantity === 0}
-            className="w-full h-9 sm:h-10 bg-foreground/95 hover:bg-black text-white text-[11px] sm:text-xs uppercase tracking-label font-semibold rounded-lg flex items-center justify-center gap-1.5 shadow-floating transition-all active:scale-95 disabled:bg-neutral-300 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full h-9 sm:h-10 bg-black hover:bg-neutral-900 text-white text-[11px] sm:text-xs uppercase tracking-wider font-bold rounded-lg flex items-center justify-center gap-1.5 shadow-floating transition-all active:scale-95 disabled:bg-neutral-300 disabled:cursor-not-allowed cursor-pointer"
           >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            {product.stock_quantity > 0 ? 'Quick Add' : 'Out of Stock'}
+            <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+            {product.stock_quantity > 0 ? 'Direct Buy' : 'Out of Stock'}
           </button>
         </div>
       </div>
