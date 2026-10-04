@@ -24,12 +24,13 @@ export function NewsletterSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [generatedCoupon, setGeneratedCoupon] = useState('JOIN20-VIP');
   const { success, error: toastError } = useToast();
 
   const handleCopyCode = () => {
-    navigator.clipboard.writeText('WELCOME15');
+    navigator.clipboard.writeText(generatedCoupon);
     setCopiedCode(true);
-    success('Promo Code Copied', 'WELCOME15 copied to clipboard for 15% off.');
+    success('20% Promo Code Copied', `${generatedCoupon} copied to clipboard for 20% off.`);
     setTimeout(() => setCopiedCode(false), 2500);
   };
 
@@ -46,6 +47,9 @@ export function NewsletterSection() {
     setIsSubmitting(false);
 
     if (res.success) {
+      if (res.couponCode) {
+        setGeneratedCoupon(res.couponCode);
+      }
       setIsSubmitted(true);
       success('Subscription Confirmed', res.message);
     } else {
@@ -140,8 +144,8 @@ export function NewsletterSection() {
                     <Tag className="w-4 h-4 text-amber-400" />
                   </div>
                   <div>
-                    <p className="font-semibold text-white">Welcome Privilege: Enjoy 15% Off</p>
-                    <p className="text-[11px] text-neutral-400">Apply code <code className="font-mono font-bold text-amber-300 bg-white/10 px-2 py-0.5 rounded border border-white/10">WELCOME15</code> at checkout on your first order.</p>
+                    <p className="font-semibold text-white">Welcome Privilege: Exclusive 20% Off</p>
+                    <p className="text-[11px] text-neutral-400">Apply unique code <code className="font-mono font-bold text-amber-300 bg-white/10 px-2 py-0.5 rounded border border-white/10">{generatedCoupon}</code> at checkout for 20% off.</p>
                   </div>
                 </div>
 
@@ -152,7 +156,7 @@ export function NewsletterSection() {
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-white/20 bg-white/10 hover:bg-white/15 text-white text-xs font-medium transition-colors cursor-pointer"
                   >
                     {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedCode ? 'Copied' : 'Copy Code'}</span>
+                    <span>{copiedCode ? 'Copied' : `Copy ${generatedCoupon}`}</span>
                   </button>
 
                   <Link

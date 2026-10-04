@@ -901,10 +901,11 @@ export async function updateOrderStatus(
   return { success: true, order: updatedOrder };
 }
 
-export async function subscribeNewsletter(email: string): Promise<{ success: boolean; message: string }> {
+export async function subscribeNewsletter(email: string): Promise<{ success: boolean; message: string; couponCode?: string; discount?: number }> {
   const cleanEmail = (email || '').trim().toLowerCase();
+  let couponCode = '';
 
-  // 1. Dispatch through API route to send email notification to ajaysaa789@gmail.com
+  // 1. Dispatch through API route to create 20% coupon and send notification to ajaysaa789@gmail.com
   if (typeof window !== 'undefined') {
     try {
       const res = await fetch('/api/newsletter/subscribe', {
@@ -917,25 +918,87 @@ export async function subscribeNewsletter(email: string): Promise<{ success: boo
         if (!memorySubscribers.includes(cleanEmail)) {
           memorySubscribers.push(cleanEmail);
         }
-        return { success: true, message: data.message || 'Thank you for subscribing to Private Releases.' };
+        couponCode = data.couponCode || `JOIN20-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
+        // Register coupon in memory and localStorage for immediate validation at checkout
+        const newCoupon: Coupon = {
+          id: 'gen-' + Date.now(),
+          code: couponCode,
+          type: 'percentage',
+          value: 20,
+          min_order_amount: 0,
+          usage_limit: 1,
+          times_used: 0,
+          is_active: true,
+          created_at: new Date().toISOString(),
+        };
+        memoryCoupons.unshift(newCoupon);
+        try {
+          const localCoupons = JSON.parse(localStorage.getItem('atelier_coupons') || '[]');
+          localCoupons.unshift(newCoupon);
+          localStorage.setItem('atelier_coupons', JSON.stringify(localCoupons));
+        } catch {}
+
+        return {
+          success: true,
+          couponCode,
+          discount: 20,
+          message: data.message || `Thank you for subscribing! Your 20% coupon is ${couponCode}.`,
+        };
       }
     } catch (err) {
       console.warn('API subscription dispatch warning:', err);
     }
   }
 
-  // 2. Direct Supabase insert fallback
+  // 2. Fallback generation if offline / direct
+  const fallbackCode = `JOIN20-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+  const fallbackCoupon: Coupon = {
+    id: 'gen-' + Date.now(),
+    code: fallbackCode,
+    type: 'percentage',
+    value: 20,
+    min_order_amount: 0,
+    usage_limit: 1,
+    times_used: 0,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  };
+  memoryCoupons.unshift(fallbackCoupon);
+
+  if (typeof window !== 'undefined') {
+    try {
+      const localCoupons = JSON.parse(localStorage.getItem('atelier_coupons') || '[]');
+      localCoupons.unshift(fallbackCoupon);
+      localStorage.setItem('atelier_coupons', JSON.stringify(localCoupons));
+    } catch {}
+  }
+
   if (isSupabaseConfigured()) {
     try {
-      const { error } = await supabase.from('subscribers').insert({ email: cleanEmail });
-      if (!error) return { success: true, message: 'Thank you for subscribing to Private Releases.' };
+      await supabase.from('subscribers').insert({ email: cleanEmail });
+      await supabase.from('coupons').insert({
+        code: fallbackCode,
+        type: 'percentage',
+        value: 20,
+        min_order_amount: 0,
+        usage_limit: 1,
+        times_used: 0,
+        is_active: true,
+      });
     } catch (err) {
-      console.warn('Newsletter Supabase error:', err);
+      console.warn('Newsletter Supabase fallback warning:', err);
     }
   }
 
   if (!memorySubscribers.includes(cleanEmail)) {
     memorySubscribers.push(cleanEmail);
   }
-  return { success: true, message: 'Thank you for subscribing to Private Releases.' };
+
+  return {
+    success: true,
+    couponCode: fallbackCode,
+    discount: 20,
+    message: `Thank you for subscribing! Your 20% discount code is ${fallbackCode}.`,
+  };
 }
