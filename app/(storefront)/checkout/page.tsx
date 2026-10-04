@@ -71,6 +71,18 @@ export default function CheckoutPage() {
   const [checkoutCouponCode, setCheckoutCouponCode] = useState('');
   const [isApplyingCoupon, setIsApplyingCoupon] = useState(false);
 
+  React.useEffect(() => {
+    try {
+      const savedCoupons = JSON.parse(localStorage.getItem('atelier_coupons') || '[]');
+      if (Array.isArray(savedCoupons) && savedCoupons.length > 0 && !coupon && !checkoutCouponCode) {
+        const latestCode = savedCoupons[0]?.code;
+        if (latestCode) {
+          setCheckoutCouponCode(latestCode);
+        }
+      }
+    } catch {}
+  }, [coupon]);
+
   const handleApplyCoupon = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!checkoutCouponCode.trim()) return;
@@ -398,7 +410,57 @@ export default function CheckoutPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Step Forms (7 cols) */}
-        <div className="lg:col-span-7">
+        <div className="lg:col-span-7 space-y-4">
+          {/* Mobile Quick Coupon Bar */}
+          <div className="lg:hidden p-3.5 rounded-xl bg-amber-50/70 border border-amber-200/90 shadow-2xs">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-bold text-neutral-900 uppercase tracking-wider flex items-center gap-1.5">
+                <Tag className="w-3.5 h-3.5 text-amber-600" />
+                Have a Promo Code / VIP Coupon?
+              </span>
+              {coupon && (
+                <span className="text-[10px] text-emerald-800 bg-emerald-100 font-bold px-2 py-0.5 rounded-full">
+                  Applied
+                </span>
+              )}
+            </div>
+            {coupon ? (
+              <div className="flex items-center justify-between p-2 rounded-lg bg-white border border-emerald-300">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span className="font-mono font-bold text-xs">{coupon.code} (-{formatPrice(discount)})</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleRemoveCoupon}
+                  className="text-xs text-neutral-400 hover:text-destructive p-1 cursor-pointer"
+                  title="Remove coupon"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                <input
+                  type="text"
+                  value={checkoutCouponCode}
+                  onChange={(e) => setCheckoutCouponCode(e.target.value.toUpperCase())}
+                  placeholder="e.g. JOIN20-XXXX or WELCOME15"
+                  className="flex-1 h-9 px-3 rounded-lg border border-black/15 bg-white text-xs font-mono uppercase tracking-wider focus:outline-none focus:border-accent"
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  variant="primary"
+                  isLoading={isApplyingCoupon}
+                  className="h-9 px-4 text-xs font-bold bg-black text-white shrink-0 cursor-pointer"
+                >
+                  Apply
+                </Button>
+              </form>
+            )}
+          </div>
+
           <AnimatePresence mode="wait">
             {/* 1. SHIPPING STEP */}
             {step === 'shipping' && (
@@ -861,6 +923,64 @@ export default function CheckoutPage() {
             <h3 className="font-serif-heading text-lg font-bold text-foreground pb-3 border-b border-black/5">
               Order Breakdown
             </h3>
+
+            {/* Promo / Coupon Code Section */}
+            <div className="p-3.5 rounded-xl bg-amber-50/60 border border-amber-200/80 space-y-2">
+              <label className="text-[11px] uppercase tracking-wider font-bold text-neutral-800 flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Tag className="w-3.5 h-3.5 text-amber-600" />
+                  Have a Promo Code / VIP Coupon?
+                </span>
+                {coupon && (
+                  <span className="text-[10px] text-emerald-800 bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded-full font-bold">
+                    Applied
+                  </span>
+                )}
+              </label>
+
+              {coupon ? (
+                <div className="flex items-center justify-between p-2.5 rounded-lg bg-white border border-emerald-300 shadow-2xs">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <div>
+                      <p className="font-mono font-bold text-xs text-foreground tracking-wider">{coupon.code}</p>
+                      <p className="text-[10px] text-emerald-700 font-semibold">
+                        {coupon.type === 'percentage'
+                          ? `${coupon.value}% discount applied (-${formatPrice(discount)})`
+                          : `${formatPrice(coupon.value)} off applied`}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleRemoveCoupon}
+                    className="p-1 rounded-md text-neutral-400 hover:text-destructive hover:bg-neutral-100 transition-colors cursor-pointer"
+                    title="Remove coupon"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleApplyCoupon} className="flex gap-2">
+                  <input
+                    type="text"
+                    value={checkoutCouponCode}
+                    onChange={(e) => setCheckoutCouponCode(e.target.value.toUpperCase())}
+                    placeholder="e.g. JOIN20-XXXX or WELCOME15"
+                    className="flex-1 h-9 px-3 rounded-lg border border-black/15 bg-white text-xs font-mono uppercase tracking-wider focus:outline-none focus:border-accent"
+                  />
+                  <Button
+                    type="submit"
+                    size="sm"
+                    variant="primary"
+                    isLoading={isApplyingCoupon}
+                    className="h-9 px-4 text-xs font-bold bg-black text-white hover:bg-neutral-800 shrink-0 cursor-pointer"
+                  >
+                    Apply
+                  </Button>
+                </form>
+              )}
+            </div>
 
             <div className="space-y-2.5 text-xs">
               <div className="flex justify-between text-secondary">

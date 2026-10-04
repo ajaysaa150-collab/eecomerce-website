@@ -16,6 +16,7 @@ import {
   CheckCircle2,
   Share2,
   Zap,
+  Tag,
 } from 'lucide-react';
 import { Product, Review } from '@/types';
 import { formatCurrency, formatDate } from '@/lib/utils';
@@ -411,6 +412,19 @@ export function PDPClient({ product, initialReviews, relatedProducts }: PDPClien
                     : 'Currently Backordered'}
                 </span>
                 <span>Ships in 24 Hours</span>
+              </div>
+
+              {/* VIP Coupon Assurance */}
+              <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 text-xs flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center shrink-0">
+                    <Tag className="w-3.5 h-3.5 text-amber-700" />
+                  </div>
+                  <div>
+                    <span className="font-semibold text-neutral-900 block">Have a VIP Discount Coupon?</span>
+                    <p className="text-[11px] text-neutral-600">Click Direct Buy Now to instantly enter & apply your code at checkout.</p>
+                  </div>
+                </div>
               </div>
             </div>
 
