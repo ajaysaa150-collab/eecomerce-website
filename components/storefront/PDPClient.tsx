@@ -169,7 +169,7 @@ export function PDPClient({ product, initialReviews, relatedProducts }: PDPClien
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-xs text-secondary mb-8">
           <Link href="/" className="hover:text-foreground transition-colors">
-            BrandWorld
+            Home
           </Link>
           <span>/</span>
           <Link href="/products" className="hover:text-foreground transition-colors">

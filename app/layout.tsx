@@ -16,14 +16,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'BRANDWORLD | Curated Minimalist Goods & High Design Essentials',
+  title: 'Curated Minimalist Goods & High Design Essentials',
   description: 'Precision-engineered modern luxury essentials, meticulously crafted for modern living and intentional spaces.',
   keywords: ['luxury design', 'minimalist', 'audio', 'horology', 'leather goods'],
   openGraph: {
-    title: 'BRANDWORLD | High Design Essentials',
+    title: 'Curated High Design Essentials',
     description: 'Precision-engineered modern luxury essentials.',
-    url: 'https://brandworld-design.com',
-    siteName: 'BRANDWORLD',
+    url: 'https://atelier-design.com',
+    siteName: 'Atelier Studio',
     images: [
       {
         url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200',

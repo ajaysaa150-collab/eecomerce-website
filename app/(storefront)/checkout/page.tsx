@@ -209,7 +209,7 @@ export default function CheckoutPage() {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_preview12345',
           amount: data.amount,
           currency: data.currency,
-          name: 'BRANDWORLD Studio',
+          name: 'Atelier Studio',
           description: `Order Payment (${items.length} items)`,
           image: '/logo.svg',
           order_id: razorpayOrderId,
@@ -258,7 +258,7 @@ export default function CheckoutPage() {
       user_id: profile.id,
       shipping_address: formData,
       billing_address: formData,
-      shipping_method: shippingMethod === 'express' ? 'BrandWorld Express Courier' : 'Standard Delivery',
+      shipping_method: shippingMethod === 'express' ? 'White-Glove Express Courier' : 'Standard Delivery',
       shipping_cost: shippingCost,
       subtotal,
       discount_amount: discount,
@@ -620,7 +620,7 @@ export default function CheckoutPage() {
                       }`}
                     >
                       <div className="flex justify-between items-center text-xs font-semibold">
-                        <span>BrandWorld Express Priority</span>
+                        <span>White-Glove Express Priority</span>
                         <span>{formatPrice(35)}</span>
                       </div>
                       <p className="text-[11px] text-secondary mt-1">Next-business-day air delivery</p>

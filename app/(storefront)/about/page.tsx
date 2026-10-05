@@ -13,14 +13,14 @@ export default function AboutPage() {
             Form Follows Silence.
           </h1>
           <p className="text-sm sm:text-base text-secondary leading-relaxed">
-            BRANDWORLD was founded in 2024 with a singular objective: to strip away the superfluous and elevate intentional living through pure materiality.
+            Our atelier was founded in 2024 with a singular objective: to strip away the superfluous and elevate intentional living through pure materiality.
           </p>
         </div>
 
         <div className="relative aspect-[16/9] rounded-3xl overflow-hidden bg-cream border border-black/5 luxury-card">
           <Image
             src="https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=1400"
-            alt="BrandWorld Studio"
+            alt="Design Studio Atelier"
             fill
             className="object-cover"
           />

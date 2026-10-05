@@ -329,13 +329,13 @@ export function HomePageClient({
       <section className="max-w-container mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-16 w-full">
         <div className="text-center max-w-lg mx-auto mb-8 sm:mb-10 px-4">
           <span className="text-[11px] uppercase tracking-label font-bold text-secondary block mb-1">
-            @brandworld_studio
+            @atelier_studio
           </span>
           <h2 className="font-serif-heading text-2xl sm:text-3xl font-bold text-foreground mb-2">
             Form In Situ
           </h2>
           <p className="text-xs text-secondary">
-            Tag #BrandWorldSpaces to be featured in our seasonal curation index.
+            Tag #AtelierLiving to be featured in our seasonal curation index.
           </p>
         </div>
 

@@ -13,10 +13,10 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const product = await getProductBySlug(params.slug);
   if (!product) {
-    return { title: 'Masterwork | BRANDWORLD' };
+    return { title: 'Masterwork | Atelier' };
   }
   return {
-    title: product.meta_title || `${product.title} | BRANDWORLD`,
+    title: product.meta_title || `${product.title} | Atelier`,
     description: product.meta_description || product.description.replace(/<[^>]+>/g, '').slice(0, 160),
     openGraph: {
       title: product.title,

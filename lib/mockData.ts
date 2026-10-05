@@ -2,12 +2,12 @@ import { Product, Category, HeroSlide, SiteSettings, SEOSettings } from '@/types
 
 export const initialSiteSettings: SiteSettings = {
   id: 'a0000000-0000-0000-0000-000000000001',
-  site_name: 'BRANDWORLD',
+  site_name: 'Atelier Studio',
   tagline: 'Curated Minimalist Goods & High Design Essentials',
   logo_url: '/logo.svg',
   logo_inverted_url: null,
   favicon_url: '/favicon.ico',
-  contact_email: 'concierge@brandworld.com',
+  contact_email: 'concierge@atelier.com',
   contact_phone: '+1 (800) 492-8172',
   business_address: '482 Mercer Street, Soho, New York, NY 10013',
   currency_code: 'USD',
@@ -15,7 +15,7 @@ export const initialSiteSettings: SiteSettings = {
   tax_rate: 8.875,
   tax_inclusive: false,
   announcement_bar_active: false,
-  announcement_bar_text: 'Complimentary global express delivery on all orders over $250',
+  announcement_bar_text: 'Complimentary White-Glove Dispatch & Worldwide Express Delivery',
   announcement_bar_link: '/products',
   announcement_bar_color: '#1A1A1A',
   social_instagram: 'https://instagram.com',
@@ -28,10 +28,10 @@ export const initialSiteSettings: SiteSettings = {
 
 export const initialSEOSettings: SEOSettings = {
   id: 's0000000-0000-0000-0000-000000000001',
-  meta_title_template: '{Page Title} | BRANDWORLD Luxury Essentials',
+  meta_title_template: '{Page Title} | Atelier Luxury Essentials',
   default_meta_description: 'Discover precision-engineered modern luxury essentials, meticulously crafted for modern living.',
   og_default_image_url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=1200&auto=format&fit=crop',
-  ga_tracking_id: 'G-BRANDWORLD2026',
+  ga_tracking_id: 'G-ATELIER2026',
   fb_pixel_id: null,
   search_console_meta: null,
   robots_txt: 'User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: https://atelier-design.com/sitemap.xml',
@@ -126,7 +126,7 @@ export const initialProducts: Product[] = [
     track_inventory: true,
     allow_backorders: false,
     status: 'active',
-    meta_title: 'Aura Spatial Wireless Speaker | BRANDWORLD',
+    meta_title: 'Aura Spatial Wireless Speaker | Atelier Studio',
     meta_description: 'Precision milled aluminum wireless speaker with lossless audio acoustics.',
     tags: ['audio', 'minimal', 'aluminum', 'wireless'],
     images: [
@@ -195,7 +195,7 @@ export const initialProducts: Product[] = [
     track_inventory: true,
     allow_backorders: false,
     status: 'active',
-    meta_title: 'Chronos Bauhaus Automatic Watch 38mm | BRANDWORLD',
+    meta_title: 'Chronos Bauhaus Automatic Watch 38mm | Atelier Studio',
     meta_description: 'Pure horological mechanical automatic watch with sapphire crystal.',
     tags: ['watch', 'automatic', 'horology', 'minimal'],
     images: [
@@ -264,7 +264,7 @@ export const initialProducts: Product[] = [
     track_inventory: true,
     allow_backorders: false,
     status: 'active',
-    meta_title: 'Tuscan Vachetta Leather Weekender Duffel | BRANDWORLD',
+    meta_title: 'Tuscan Vachetta Leather Weekender Duffel | Atelier Studio',
     meta_description: 'Full-grain vegetable-tanned leather duffel handcrafted in Tuscany.',
     tags: ['leather', 'travel', 'duffel', 'carry'],
     images: [
@@ -333,7 +333,7 @@ export const initialProducts: Product[] = [
     track_inventory: true,
     allow_backorders: false,
     status: 'active',
-    meta_title: 'Brutalist Cast Bronze Vessel | BRANDWORLD',
+    meta_title: 'Brutalist Cast Bronze Vessel | Atelier Studio',
     meta_description: 'Lost-wax bronze cast vessel with organic tactile patina.',
     tags: ['home', 'bronze', 'sculpture', 'vessel'],
     images: [
@@ -372,7 +372,7 @@ export const initialProducts: Product[] = [
     track_inventory: true,
     allow_backorders: false,
     status: 'active',
-    meta_title: 'Studio Desk Lamp in Anodized Black | BRANDWORLD',
+    meta_title: 'Studio Desk Lamp in Anodized Black | Atelier Studio',
     meta_description: 'Precision architectural task lighting with tactile rotary dimmer.',
     tags: ['lighting', 'desk', 'design', 'minimal'],
     images: [
@@ -411,7 +411,7 @@ export const initialProducts: Product[] = [
     track_inventory: true,
     allow_backorders: false,
     status: 'active',
-    meta_title: 'Sonic Noise-Canceling Studio Headphones | BRANDWORLD',
+    meta_title: 'Sonic Noise-Canceling Studio Headphones | Atelier Studio',
     meta_description: 'Electrostatic clarity wireless headphones with custom beryllium drivers.',
     tags: ['audio', 'headphones', 'bluetooth', 'lossless'],
     images: [

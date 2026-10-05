@@ -341,7 +341,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // Only if email confirmation is disabled on Supabase and an active session was generated:
         if (data?.session && data?.user) {
           await fetchSupabaseProfile(data.user.id, cleanEmail);
-          success('Account Created', 'Welcome to BRANDWORLD.');
+          success('Account Created', 'Welcome to your account.');
           closeAuthModal();
           return { success: true };
         }

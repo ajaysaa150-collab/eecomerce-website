@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { SiteSettings } from '@/types';
 import { Instagram, Facebook, Twitter, Youtube, ShieldCheck } from 'lucide-react';
-import { CurrencySelector } from './CurrencySelector';
 
 interface FooterProps {
   settings: SiteSettings;
@@ -17,9 +16,11 @@ export function Footer({ settings }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-16 border-b border-white/10">
           {/* Brand Info (2 cols on large) */}
           <div className="lg:col-span-2 space-y-4">
-            <span className="font-serif-heading text-3xl font-bold tracking-tight text-white block">
-              {settings.site_name}
-            </span>
+            {settings.site_name && settings.site_name !== 'BRANDWORLD' && (
+              <span className="font-serif-heading text-3xl font-bold tracking-tight text-white block">
+                {settings.site_name}
+              </span>
+            )}
             <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
               {settings.tagline}
             </p>
@@ -149,7 +150,7 @@ export function Footer({ settings }: FooterProps) {
           {/* Legal & Policies */}
           <div>
             <h4 className="text-xs uppercase tracking-[0.16em] font-bold text-white mb-4">
-              {settings.site_name}
+              Company
             </h4>
             <ul className="space-y-2.5 text-xs text-neutral-400">
               <li>
@@ -179,8 +180,7 @@ export function Footer({ settings }: FooterProps) {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-6 text-[11px] text-neutral-400">
           <div className="flex flex-wrap items-center gap-4">
-            <CurrencySelector variant="footer" />
-            <p>© {new Date().getFullYear()} {settings.site_name} Studio Inc. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Studio Atelier. All rights reserved.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3 text-[10px] font-semibold tracking-widest text-neutral-400">
             <span className="px-2 py-0.5 rounded bg-white/10 text-white">RAZORPAY SECURED</span>

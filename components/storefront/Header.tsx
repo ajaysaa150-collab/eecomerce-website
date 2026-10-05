@@ -81,6 +81,7 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
   const desktopNavLinks = useMemo(() => {
     if (!categories || categories.length === 0) {
       return [
+        { label: 'Home', href: '/' },
         { label: 'Catalog', href: '/products' },
         { label: 'Living', href: '/products?category=living-object' },
         { label: 'Audio', href: '/products?category=audio-acoustics' },
@@ -91,6 +92,7 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
     }
 
     return [
+      { label: 'Home', href: '/' },
       { label: 'Catalog', href: '/products' },
       ...categories.slice(0, 4).map((c) => ({
         label: c.name,
@@ -104,6 +106,7 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
     if (!categories || categories.length === 0) return desktopNavLinks;
 
     return [
+      { label: 'Home', href: '/' },
       { label: 'Catalog', href: '/products' },
       ...categories.map((c) => ({
         label: c.name,
@@ -121,7 +124,7 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
           <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden truncate">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
             <span className="truncate">
-              Complimentary White-Glove Dispatch on orders over ₹2,500 / $100
+              Complimentary White-Glove Dispatch & Worldwide Express Delivery
             </span>
           </div>
 
@@ -185,15 +188,7 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
             </nav>
           </div>
 
-          {/* Center Area: Prestigious Brand Emblem & Logo */}
-          <Link href="/" className="flex items-center gap-1.5 sm:gap-2.5 group shrink-0 py-1">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg sm:rounded-xl bg-black text-white flex items-center justify-center font-serif-heading font-bold text-xs sm:text-sm md:text-base shadow-sm group-hover:bg-neutral-800 transition-colors shrink-0">
-              {settings.site_name ? settings.site_name.charAt(0) : 'B'}
-            </div>
-            <span className="font-serif-heading text-sm sm:text-xl lg:text-2xl font-bold tracking-tight text-foreground group-hover:text-black transition-colors leading-none whitespace-nowrap">
-              {settings.site_name || 'BRANDWORLD'}
-            </span>
-          </Link>
+
 
           {/* Right Area: Action Controls (Currency, Search, Wishlist, Account, Cart) */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
@@ -352,14 +347,9 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
           >
             {/* Mobile Header Bar */}
             <div className="flex items-center justify-between pb-6 border-b border-black/10">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-black text-white flex items-center justify-center font-serif-heading font-bold text-base">
-                  {settings.site_name ? settings.site_name.charAt(0) : 'B'}
-                </div>
-                <span className="font-serif-heading text-2xl font-bold tracking-tight text-foreground">
-                  {settings.site_name}
-                </span>
-              </div>
+              <span className="font-serif-heading text-xl font-bold tracking-wider uppercase text-foreground">
+                Menu
+              </span>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="p-2 rounded-xl text-secondary hover:text-foreground hover:bg-black/5 transition-colors"
