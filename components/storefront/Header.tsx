@@ -81,7 +81,6 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
   const desktopNavLinks = useMemo(() => {
     if (!categories || categories.length === 0) {
       return [
-        { label: 'Home', href: '/' },
         { label: 'Catalog', href: '/products' },
         { label: 'Living', href: '/products?category=living-object' },
         { label: 'Audio', href: '/products?category=audio-acoustics' },
@@ -92,7 +91,6 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
     }
 
     return [
-      { label: 'Home', href: '/' },
       { label: 'Catalog', href: '/products' },
       ...categories.slice(0, 4).map((c) => ({
         label: c.name,
@@ -106,7 +104,6 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
     if (!categories || categories.length === 0) return desktopNavLinks;
 
     return [
-      { label: 'Home', href: '/' },
       { label: 'Catalog', href: '/products' },
       ...categories.map((c) => ({
         label: c.name,
@@ -188,7 +185,12 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
             </nav>
           </div>
 
-
+          {/* Center Area: Brand Name Only (No Emblem / Box) */}
+          <Link href="/" className="flex items-center group shrink-0 py-1">
+            <span className="font-serif-heading text-lg sm:text-2xl lg:text-3xl font-bold tracking-tight text-foreground group-hover:text-neutral-700 transition-colors leading-none whitespace-nowrap">
+              {settings.site_name || 'BRANDWORLD'}
+            </span>
+          </Link>
 
           {/* Right Area: Action Controls (Currency, Search, Wishlist, Account, Cart) */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
@@ -228,18 +230,18 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
                     setIsUserMenuOpen(!isUserMenuOpen);
                   }
                 }}
-                className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center border transition-all shadow-xs cursor-pointer ${
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all shadow-xs cursor-pointer ${
                   user
-                    ? 'bg-black text-white border-black font-semibold text-xs'
+                    ? 'bg-black text-white border-black font-semibold text-sm'
                     : 'bg-neutral-100/80 hover:bg-black hover:text-white text-secondary border-black/5'
                 }`}
                 aria-label="User account"
                 title={user ? profile?.full_name || 'My Account' : 'Sign In'}
               >
                 {user ? (
-                  profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : <User className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
                 ) : (
-                  <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <User className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
                 )}
               </button>
 
@@ -347,8 +349,8 @@ export function Header({ settings, onOpenSearch }: HeaderProps) {
           >
             {/* Mobile Header Bar */}
             <div className="flex items-center justify-between pb-6 border-b border-black/10">
-              <span className="font-serif-heading text-xl font-bold tracking-wider uppercase text-foreground">
-                Menu
+              <span className="font-serif-heading text-2xl font-bold tracking-tight text-foreground">
+                {settings.site_name || 'BRANDWORLD'}
               </span>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}

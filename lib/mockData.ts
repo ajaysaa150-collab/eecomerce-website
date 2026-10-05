@@ -2,7 +2,7 @@ import { Product, Category, HeroSlide, SiteSettings, SEOSettings } from '@/types
 
 export const initialSiteSettings: SiteSettings = {
   id: 'a0000000-0000-0000-0000-000000000001',
-  site_name: 'Atelier Studio',
+  site_name: 'BRANDWORLD',
   tagline: 'Curated Minimalist Goods & High Design Essentials',
   logo_url: '/logo.svg',
   logo_inverted_url: null,
